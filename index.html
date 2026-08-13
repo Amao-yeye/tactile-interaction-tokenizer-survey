@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="跨触觉与力传感器的可扩展 Interaction Tokenizer 文献调研、论文优先级、研究空白和实验路线。" />
+  <meta name="description" content="异构触觉与力传感器的可扩展 Interaction Tokenizer 文献调研，涵盖论文优先级、方法对比、研究空白与评测路线。" />
   <title>跨触觉 / 力传感器的可扩展 Interaction Tokenizer｜文献调研</title>
   <style>
     :root {
@@ -724,7 +724,7 @@
         <div class="eyebrow"><span class="pulse"></span> Literature map · 2026-08-13</div>
         <h1>异构触觉与力感知<br><span class="gradient-text">可扩展 Interaction Tokenizer</span></h1>
         <p class="hero-lead">
-          面向你的目标：将 image tactile、taxel array、6D wrench 等异构数据混合训练，形成共享的物理交互接口；换到新传感器时，只适配轻量输入模块，并尽可能保持共享 trunk 与控制策略不变。
+          研究目标：将 image tactile、taxel array、6D wrench 等异构数据混合训练，形成共享的物理交互接口；换到新传感器时，仅适配轻量输入模块，并尽可能保持共享 trunk 与控制策略不变。
         </p>
         <div class="hero-actions">
           <a class="button primary" href="#priority">查看论文优先级 →</a>
@@ -760,7 +760,7 @@
           <div>
             <div class="section-kicker">Executive summary</div>
             <h2>先抓住四个结论</h2>
-            <p class="section-desc">现有方法分别解决了“规模”“对齐”“物理锚点”或“跨域迁移”，但还没有完整覆盖你的目标组合。</p>
+            <p class="section-desc">现有方法分别解决了“规模”“对齐”“物理锚点”或“跨域迁移”，但尚未完整覆盖这一目标组合。</p>
           </div>
         </div>
 
@@ -824,7 +824,7 @@
         <div class="section-head">
           <div>
             <div class="section-kicker">Reading priority</div>
-            <h2>你需要看的论文，按优先级</h2>
+            <h2>核心论文，按优先级</h2>
             <p class="section-desc">前 6 篇建议精读；7–12 用于补足训练范式、baseline 和 related-work 边界。</p>
           </div>
         </div>
@@ -837,13 +837,13 @@
                 <th>论文</th>
                 <th>核心贡献</th>
                 <th>数据 / 对齐条件</th>
-                <th>与你的关系</th>
+                <th>与研究目标的关系</th>
                 <th>主要局限</th>
               </tr>
             </thead>
             <tbody>
               <tr><td><span class="rank">1</span></td><td><a href="https://arxiv.org/abs/2606.31236" target="_blank" rel="noopener">TactX</a><div class="tag-row"><span class="tag paired">paired</span><span class="tag scale">zero-shot policy</span></div></td><td>三种不同 transduction modality 映射到共享 latent，支持跨 sensor 零样本策略迁移。</td><td>不同传感器观测可比接触；contrastive + self/cross reconstruction。</td><td>最直接的 sensor-agnostic policy-interface competitor。</td><td>依赖 quasi-static paired contacts；动态 shear/sliding 覆盖有限。</td></tr>
-              <tr><td><span class="rank">2</span></td><td><a href="https://arxiv.org/abs/2606.13102" target="_blank" rel="noopener">FTP-1</a><div class="tag-row"><span class="tag scale">3,000 h</span><span class="tag unpaired">aggregated</span></div></td><td>21 种 image/array/state sensors，通过 MTTS 与共享 tactile expert 做大规模策略预训练。</td><td>26 个来源的异构 trajectories；没有严格 cross-sensor pair。</td><td>你的数据、系统 baseline 与 scale baseline。</td><td>新 sensor 仍需从头训练 sensor-specific encoder，并用 50–100 条任务示教 finetune。</td></tr>
+              <tr><td><span class="rank">2</span></td><td><a href="https://arxiv.org/abs/2606.13102" target="_blank" rel="noopener">FTP-1</a><div class="tag-row"><span class="tag scale">3,000 h</span><span class="tag unpaired">aggregated</span></div></td><td>21 种 image/array/state sensors，通过 MTTS 与共享 tactile expert 做大规模策略预训练。</td><td>26 个来源的异构 trajectories；没有严格 cross-sensor pair。</td><td>主要数据、系统 baseline 与 scale baseline。</td><td>新 sensor 仍需从头训练 sensor-specific encoder，并用 50–100 条任务示教 finetune。</td></tr>
               <tr><td><span class="rank">3</span></td><td><a href="https://arxiv.org/abs/2606.29948" target="_blank" rel="noopener">HTT</a><div class="tag-row"><span class="tag paired">1.6M paired</span><span class="tag physics">image + array</span></div></td><td>sensor-specific encoder + shared Transformer；masked reconstruction 与双向 cross-sensor prediction。</td><td>四种传感器的同步 paired frames，包含 press/twist/slide。</td><td>最强 paired heterogeneous SSL baseline。</td><td>专门采集 paired dataset；尚未统一 wrist F/T 与更广泛 state-type sensing。</td></tr>
               <tr><td><span class="rank">4</span></td><td><a href="https://arxiv.org/abs/2602.01153" target="_blank" rel="noopener">UniForce</a><div class="tag-row"><span class="tag physics">force-grounded</span><span class="tag paired">equilibrium pairs</span></div></td><td>利用准静态受力平衡学习跨视觉式/非视觉式触觉的 shared latent force space。</td><td>sensor–object–sensor 的 force-equilibrium paired data。</td><td>给共享 token 定义物理坐标系的关键参考。</td><td>共享变量主要是 force；不足以完整表达 geometry、slip dynamics 和 jam。</td></tr>
               <tr><td><span class="rank">5</span></td><td><a href="https://arxiv.org/abs/2602.13579" target="_blank" rel="noopener">TactAlign</a><div class="tag-row"><span class="tag unpaired">unpaired</span><span class="tag scale">latent transport</span></div></td><td>用 interaction-derived pseudo-pairs 和 rectified flow 对齐人手与机器人异构触觉。</td><td>无需 paired dataset 或人工标签，但需要同类 interaction 结构。</td><td>FTP-1 非配对 trajectories 如何构造弱对齐信号的主要参考。</td><td>聚焦 human-to-robot / cross-embodiment，不是通用新传感器即插即用。</td></tr>
@@ -991,7 +991,7 @@
             <h3 class="paper-title"><a href="https://arxiv.org/abs/2410.24090" target="_blank" rel="noopener">Sparsh: Self-supervised Touch Representations</a></h3>
             <p class="paper-summary">在 460k+ vision-based tactile images 上用 masking 与 self-distillation 学通用表征，DINO 和 I-JEPA 变体最有竞争力。</p>
             <div class="tag-row"><span class="tag scale">generic SSL</span></div>
-            <details><summary>展开阅读重点</summary><div class="details-grid"><div class="detail-box"><h4>为什么看</h4><p>作为 generic pretrained encoder，判断你的增益是否来自跨 sensor interaction grounding。</p></div><div class="detail-box"><h4>重点读</h4><p>augmentations、DINO/I-JEPA/MAE、frozen probes 与 TacBench。</p></div><div class="detail-box"><h4>局限</h4><p>不提供跨 sensing mechanism 的显式统一接口。</p></div></div></details>
+            <details><summary>展开阅读重点</summary><div class="details-grid"><div class="detail-box"><h4>为什么看</h4><p>作为 generic pretrained encoder，用于判断增益是否来自跨 sensor interaction grounding。</p></div><div class="detail-box"><h4>重点读</h4><p>augmentations、DINO/I-JEPA/MAE、frozen probes 与 TacBench。</p></div><div class="detail-box"><h4>局限</h4><p>不提供跨 sensing mechanism 的显式统一接口。</p></div></div></details>
             <a class="source-link" href="https://arxiv.org/abs/2410.24090" target="_blank" rel="noopener">打开主来源 ↗</a>
           </article>
         </div>
@@ -1004,7 +1004,7 @@
           <div>
             <div class="section-kicker">Comparison matrix</div>
             <h2>最需要正面对比的六篇</h2>
-            <p class="section-desc">这张表直接决定你的 related work、方法边界和实验 protocol。</p>
+            <p class="section-desc">这张表可用于组织 related work、方法边界和实验 protocol。</p>
           </div>
         </div>
 
@@ -1023,7 +1023,7 @@
         </div>
 
         <div class="note" style="margin-top:16px">
-          <strong>最关键的区分：</strong>FTP-1 给你规模，TactX / HTT 给你显式对齐，UniForce 给你物理坐标系，TactAlign 给你非配对桥接。你的工作需要把这四种能力组合，而不是只把其中一种做大。
+          <strong>最关键的区分：</strong>FTP-1 提供规模，TactX / HTT 提供显式对齐，UniForce 提供物理坐标系，TactAlign 提供非配对桥接。一个完整方案需要组合这四种能力，而不是只放大其中一种。
         </div>
       </div>
     </section>
@@ -1044,7 +1044,7 @@
               <div class="axis-node node-top">大规模异构数据<small>FTP-1 · T3</small></div>
               <div class="axis-node node-left">显式跨 sensor 对齐<small>TactX · HTT</small></div>
               <div class="axis-node node-right">物理 canonical space<small>UniForce · GenForce</small></div>
-              <div class="center-node">你的目标<small>mostly unpaired + interaction-grounded + adapter-only</small></div>
+              <div class="center-node">目标组合<small>mostly unpaired + interaction-grounded + adapter-only</small></div>
             </div>
           </div>
 
@@ -1063,7 +1063,7 @@
         <div class="section-head">
           <div>
             <div class="section-kicker">Proposed direction</div>
-            <h2>适合 FTP-1 + MiniVA 的模型路线</h2>
+            <h2>面向可扩展传感器接入的模型路线</h2>
             <p class="section-desc">第一版建议先使用连续 tokens；当共享空间确实不携带 sensor identity 后，再尝试 VQ / FSQ 离散化。</p>
           </div>
         </div>
@@ -1154,7 +1154,7 @@
               <li><strong>Generic SSL：</strong>Sparsh 或 T3 encoder</li>
               <li><strong>Paired alignment upper bound：</strong>TactX / CTTP</li>
               <li><strong>Physics grounding：</strong>UniForce-style force target</li>
-              <li><strong>你的方法：</strong>transition-grounded common/private tokens</li>
+              <li><strong>候选方法：</strong>transition-grounded common/private tokens</li>
             </ul>
           </div>
           <div class="list-card">
@@ -1221,7 +1221,7 @@
             a lightweight input adapter while keeping the shared policy fixed?
           </div>
           <p style="margin-bottom:0;color:var(--ink-2)">
-            对 FTP-1 + MiniVA，最有辨识度的三个关键词是：<strong>unpaired physical alignment</strong>、<strong>common/private token decomposition</strong>、<strong>adapter-only sensor onboarding</strong>。
+            这一研究方向最有辨识度的三个关键词是：<strong>unpaired physical alignment</strong>、<strong>common/private token decomposition</strong>、<strong>adapter-only sensor onboarding</strong>。
           </p>
         </div>
       </div>
