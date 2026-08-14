@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="异构触觉与力传感器的可扩展 Interaction Tokenizer 文献调研，涵盖论文优先级、方法对比、研究空白与评测路线。" />
+  <meta name="description" content="异构触觉与力传感器的可扩展 Interaction Tokenizer 调研，涵盖论文优先级、方法对比、Tokenizer 原理与经典论文、触觉仿真平台及评测路线。" />
   <title>跨触觉 / 力传感器的可扩展 Interaction Tokenizer｜文献调研</title>
   <style>
     :root {
@@ -604,33 +604,6 @@
     .clean-list li + li { margin-top: .46rem; }
     .clean-list li::marker { color: var(--accent); }
 
-    .roadmap {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
-    .phase {
-      position: relative;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 20px;
-      box-shadow: var(--shadow-soft);
-    }
-    .phase-number {
-      display: inline-grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 11px;
-      background: var(--accent);
-      color: white;
-      font-family: var(--mono);
-      font-weight: 850;
-    }
-    .phase h3 { margin: .8rem 0 .45rem; font-size: 1.04rem; }
-    .phase p, .phase li { color: var(--muted); font-size: .88rem; }
-    .phase ul { padding-left: 1.1rem; margin-bottom: 0; }
 
     .supplement-grid {
       display: grid;
@@ -665,11 +638,301 @@
     }
     .footer-inner { display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--border); padding-top: 22px; }
 
+
+
+    /* Tokenizer primer and simulation platform extensions */
+    .definition-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .definition-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 184px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+    .definition-card::after {
+      content: "";
+      position: absolute;
+      width: 88px;
+      height: 88px;
+      right: -36px;
+      bottom: -36px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+    }
+    .definition-card .label {
+      display: inline-block;
+      color: var(--accent-2);
+      font-family: var(--mono);
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .definition-card h3 { margin: .55rem 0 .45rem; font-size: 1.06rem; }
+    .definition-card p { margin: 0; color: var(--muted); font-size: .89rem; }
+
+    .token-pipeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin: 20px 0;
+    }
+    .token-stage {
+      position: relative;
+      min-height: 176px;
+      padding: 18px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+    .token-stage:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      z-index: 2;
+      right: -21px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: var(--accent);
+      font-weight: 900;
+      box-shadow: var(--shadow-soft);
+    }
+    .token-stage .stage-num {
+      display: inline-grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      font-family: var(--mono);
+      font-size: .76rem;
+      font-weight: 850;
+    }
+    .token-stage h3 { margin: .7rem 0 .38rem; font-size: .98rem; }
+    .token-stage p { margin: 0; color: var(--muted); font-size: .84rem; }
+    .token-stage code { display: block; margin-top: .62rem; color: var(--accent-2); font-size: .77rem; }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin-top: 18px;
+    }
+    .method-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 260px;
+      padding: 19px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+    .method-card .method-index {
+      width: fit-content;
+      padding: .22rem .52rem;
+      border-radius: 999px;
+      color: white;
+      background: var(--accent);
+      font-family: var(--mono);
+      font-size: .73rem;
+      font-weight: 800;
+    }
+    .method-card h3 { margin: 0; font-size: 1.05rem; }
+    .method-card p { margin: 0; color: var(--muted); font-size: .88rem; }
+    .method-card .equation-small {
+      margin-top: auto;
+      padding: 10px 11px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-2);
+      color: var(--ink-2);
+      font-family: var(--mono);
+      font-size: .76rem;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+
+    .comparison-band {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 13px;
+      margin-top: 16px;
+    }
+    .comparison-band > div {
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+    .comparison-band strong { display: block; margin-bottom: .35rem; }
+    .comparison-band p { margin: 0; color: var(--muted); font-size: .86rem; }
+
+    .sim-stack {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .sim-layer {
+      position: relative;
+      min-height: 160px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+    .sim-layer:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      color: var(--accent);
+      font-size: 1.45rem;
+      font-weight: 900;
+    }
+    .sim-layer .layer-tag {
+      display: inline-block;
+      color: var(--accent-2);
+      font-family: var(--mono);
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .sim-layer h3 { margin: .52rem 0 .35rem; font-size: .97rem; }
+    .sim-layer p { margin: 0; color: var(--muted); font-size: .83rem; }
+
+    .platform-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem;
+    }
+    .platform-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 27px;
+      padding: .2rem .52rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      font-size: .75rem;
+      font-weight: 720;
+    }
+    .wide-table table { min-width: 1260px; }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .decision-card {
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+    .decision-card .question {
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 760;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .decision-card h3 { margin: .45rem 0 .4rem; font-size: 1rem; }
+    .decision-card p { margin: 0; color: var(--muted); font-size: .86rem; }
+
+    .canonical-flow {
+      display: grid;
+      grid-template-columns: .9fr 42px 1.4fr 42px .9fr;
+      gap: 9px;
+      align-items: stretch;
+      margin-top: 18px;
+    }
+    .canonical-node {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 150px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface-2);
+      text-align: center;
+    }
+    .canonical-node strong { font-size: .93rem; }
+    .canonical-node span { margin-top: .42rem; color: var(--muted); font-size: .78rem; }
+    .canonical-node.renderers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: var(--surface);
+    }
+    .renderer-chip {
+      display: grid;
+      place-items: center;
+      min-height: 94px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--surface-2);
+      font-size: .78rem;
+      font-weight: 720;
+    }
+    .canonical-arrow { display: grid; place-items: center; color: var(--accent); font-size: 1.55rem; font-weight: 900; }
+
+    .source-caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    @media (max-width: 1100px) {
+      .nav-links a { font-size: .84rem; padding-inline: .52rem; }
+      .definition-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .method-grid, .decision-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .token-pipeline, .sim-stack { grid-template-columns: 1fr; }
+      .token-stage:not(:last-child)::after, .sim-layer:not(:last-child)::after {
+        content: "↓";
+        right: 50%;
+        top: auto;
+        bottom: -22px;
+        transform: translateX(50%);
+      }
+      .canonical-flow { grid-template-columns: 1fr; }
+      .canonical-arrow { transform: rotate(90deg); min-height: 30px; }
+    }
+
+    @media (max-width: 720px) {
+      .definition-grid, .method-grid, .comparison-band, .decision-grid { grid-template-columns: 1fr; }
+      .canonical-node.renderers { grid-template-columns: 1fr; }
+    }
+
     @media (max-width: 980px) {
       .hero-grid, .gap-layout { grid-template-columns: 1fr; }
       .insight-grid { grid-template-columns: repeat(2, 1fr); }
       .paper-grid { grid-template-columns: 1fr; }
-      .roadmap { grid-template-columns: 1fr; }
       .flow { grid-template-columns: 1fr; }
       .arrow { transform: rotate(90deg); min-height: 30px; }
       .gap-map { min-height: 390px; }
@@ -690,7 +953,7 @@
     @media print {
       .topbar, .hero-actions, .toolbar, .icon-button { display: none !important; }
       body { background: white; color: #111827; }
-      .paper-card, .callout, .architecture, .table-wrap, .gap-map, .gap-item, .phase, .list-card { box-shadow: none; break-inside: avoid; }
+      .paper-card, .callout, .architecture, .table-wrap, .gap-map, .gap-item, .list-card { box-shadow: none; break-inside: avoid; }
       details { open: true; }
       main section { padding: 24px 0; }
       a { color: #111827; text-decoration: underline; }
@@ -712,6 +975,8 @@
         <a href="#papers">论文卡片</a>
         <a href="#gap">研究空白</a>
         <a href="#proposal">建议方案</a>
+        <a href="#tokenizer-primer">Tokenizer</a>
+        <a href="#simulation-platforms">仿真平台</a>
         <button class="icon-button" id="printButton" type="button" title="打印或另存为 PDF">打印</button>
         <button class="icon-button" id="themeButton" type="button" title="切换明暗主题">◐</button>
       </nav>
@@ -746,8 +1011,8 @@
         <div class="metrics">
           <div class="metric"><strong>12</strong><span>核心论文</span></div>
           <div class="metric"><strong>5</strong><span>补充阅读</span></div>
-          <div class="metric"><strong>21</strong><span>FTP-1 覆盖传感器</span></div>
-          <div class="metric"><strong>1</strong><span>核心 novelty gap</span></div>
+          <div class="metric"><strong>14</strong><span>专用仿真平台</span></div>
+          <div class="metric"><strong>6</strong><span>Tokenizer 范式</span></div>
         </div>
       </aside>
     </div>
@@ -1171,23 +1436,6 @@
       </div>
     </section>
 
-    <section id="reading">
-      <div class="shell">
-        <div class="section-head">
-          <div>
-            <div class="section-kicker">Reading route</div>
-            <h2>建议阅读顺序</h2>
-            <p class="section-desc">先确定 novelty 边界，再解决非配对数据，最后补物理 canonical space 和通用 encoder baseline。</p>
-          </div>
-        </div>
-
-        <div class="roadmap">
-          <article class="phase"><span class="phase-number">01</span><h3>建立核心问题</h3><p><strong>TactX → FTP-1 → HTT → UniForce</strong></p><ul><li>共享空间如何定义？</li><li>是否需要 paired data？</li><li>policy 能否冻结？</li><li>新 sensor 需要多少任务数据？</li></ul></article>
-          <article class="phase"><span class="phase-number">02</span><h3>解决非配对 FTP-1 数据</h3><p><strong>TactAlign → T3 → AnyTouch → CTTP</strong></p><ul><li>trajectory pseudo-pairs</li><li>shared trunk 的能力边界</li><li>动态触觉如何建模</li><li>paired alignment 上界</li></ul></article>
-          <article class="phase"><span class="phase-number">03</span><h3>确定物理接口与 baseline</h3><p><strong>TactSpace → GenForce → ACROSS → Sparsh</strong></p><ul><li>force / deformation / transition 哪个最合适</li><li>新 sensor calibration protocol</li><li>通用 SSL 是否已足够</li></ul></article>
-        </div>
-      </div>
-    </section>
 
     <section id="supplement">
       <div class="shell">
@@ -1226,11 +1474,262 @@
         </div>
       </div>
     </section>
+
+
+    <section id="tokenizer-primer">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Tokenizer primer</div>
+            <h2>Tokenizer 是什么：原理、经典论文与主流范式</h2>
+            <p class="section-desc">Tokenizer 不只存在于大语言模型，也不必然等于“离散词表”。更一般地，它定义了原始观测如何被切分、压缩、编码，并以有限长度的 token 序列交给后续模型。</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <h3>一句话定义</h3>
+          <p><strong>Tokenizer 是原始数据与序列模型之间的接口协议。</strong>它同时回答四个问题：什么算一个基本单元、输出多少个单元、每个单元是连续向量还是离散编号，以及这些单元通过什么训练目标获得语义。</p>
+          <div class="formula-block">
+            raw observation x<br>
+            &nbsp;&nbsp;→ unitization S(x)<br>
+            &nbsp;&nbsp;→ encoder / projector E<br>
+            &nbsp;&nbsp;→ optional bottleneck Q<br>
+            &nbsp;&nbsp;→ Z = [z₁, z₂, …, zₖ] + position / time / sensor metadata
+          </div>
+        </div>
+
+        <div class="definition-grid">
+          <article class="definition-card"><span class="label">Token</span><h3>模型处理的基本单元</h3><p>可以是词片段、图像 patch、时间窗口、学习得到的 latent slot，也可以是 codebook 中的整数编号。现代多模态模型中，token 往往只是一个 <code>d</code> 维连续向量。</p></article>
+          <article class="definition-card"><span class="label">Tokenizer</span><h3>生成 token 的映射与规则</h3><p>不仅包括 encoder，还包括切分粒度、序列长度、位置与时间编码、可选量化，以及决定 token 应保留什么信息的训练目标。</p></article>
+          <article class="definition-card"><span class="label">Encoder</span><h3>抽取内容，但未必定义接口</h3><p>Encoder 将输入变成 feature。只有当这些 feature 被组织成稳定、可消费的序列协议时，才形成完整 tokenizer。一个 CNN feature map 本身不自动等于通用 token space。</p></article>
+          <article class="definition-card"><span class="label">Codebook</span><h3>离散 tokenizer 的“词典”</h3><p>VQ 类方法维护有限个向量原型，将连续 latent 替换为最近的 code。它利于压缩、生成和发现重复 primitive，但会带来 codebook collapse 与量化误差。</p></article>
+        </div>
+
+        <div class="architecture" style="margin-top:18px">
+          <h3 style="margin-top:0">一个完整 tokenizer 通常包含五个阶段</h3>
+          <div class="token-pipeline" aria-label="Tokenizer 处理流程">
+            <article class="token-stage"><span class="stage-num">01</span><h3>原始输入</h3><p>文本、RGB、触觉图像、taxel array、6D wrench 或多速率时间序列。</p><code>x ∈ raw sensor space</code></article>
+            <article class="token-stage"><span class="stage-num">02</span><h3>切分 / 单元化</h3><p>字符合并、固定 patch、taxel 点、滑动时间窗，或按接触区域划分。</p><code>S(x) = {u₁,…,uₙ}</code></article>
+            <article class="token-stage"><span class="stage-num">03</span><h3>编码 / 投影</h3><p>将不同形态和量纲统一到共享 hidden dimension，并注入位置、方向和时间信息。</p><code>hᵢ = E(uᵢ, metadata)</code></article>
+            <article class="token-stage"><span class="stage-num">04</span><h3>压缩 / 量化</h3><p>可保持连续，也可用 query resampler、VQ、FSQ 或多级 RVQ 压缩。</p><code>zᵢ = Q(hᵢ) or hᵢ</code></article>
+            <article class="token-stage"><span class="stage-num">05</span><h3>序列接口</h3><p>输出固定或可变长度 token 序列，供 Transformer、world model 或控制策略消费。</p><code>Z ∈ ℝᴷˣᵈ or {1,…,V}ᴷ</code></article>
+          </div>
+          <div class="note"><strong>最常见的概念误区：</strong>token 不一定离散。ViT 的 patch embeddings、Perceiver 的 latent slots、Flamingo 的 Perceiver Resampler 和 BLIP-2 的 query tokens 都是连续 token；VQ-VAE、VQGAN 与 FSQ 才显式产生离散 codes。</div>
+        </div>
+
+        <div class="section-head" style="margin-top:34px">
+          <div>
+            <div class="section-kicker">Mainstream families</div>
+            <h2 style="font-size:clamp(1.45rem,2.7vw,2.05rem)">六类主流 tokenizer 方法</h2>
+            <p class="section-desc">这些方法并不互斥。实际系统常采用“固定 patch + learned encoder + query compression + optional quantization”的组合。</p>
+          </div>
+        </div>
+
+        <div class="method-grid">
+          <article class="method-card"><span class="method-index">01 · SUBWORD</span><h3>规则 / 统计式子词切分</h3><p>BPE 迭代合并高频符号对；WordPiece 采用 longest-match 与词表目标；Unigram LM 从候选子词中概率化选择。优点是可逆、成熟、适合离散文本，通常不直接用于连续传感器。</p><div class="equation-small">characters → frequent merges → token IDs<br>代表：BPE · WordPiece · Unigram · SentencePiece</div></article>
+          <article class="method-card"><span class="method-index">02 · PATCH / WINDOW</span><h3>固定空间或时间切分</h3><p>ViT 将图像切成规则 patch 后线性投影；时序传感器可按固定窗口或 stride 切分。结构简单、吞吐高，但 token 边界不一定对应真实语义或接触事件。</p><div class="equation-small">zᵢ = W · vec(patchᵢ) + pᵢ<br>触觉：image patches · taxel groups · force windows</div></article>
+          <article class="method-card"><span class="method-index">03 · CONTINUOUS</span><h3>连续 encoder / projector token</h3><p>CNN、ViT、TCN 或 MLP 直接输出 <code>ℝᵈ</code> tokens。训练稳定、保真度高，适合控制与跨传感器 adapter；缺点是缺少天然词表和符号可解释性。</p><div class="equation-small">Z = Projector(Encoder(x))<br>无最近邻量化 · 端到端可微</div></article>
+          <article class="method-card"><span class="method-index">04 · QUERY / SLOT</span><h3>学习查询与固定长度 resampling</h3><p>一组 learned queries 对任意长度输入做 cross-attention，压成固定 <code>K</code> 个 slots。Perceiver、Flamingo Resampler、Q-Former 和 TokenLearner 都属于这一大类。</p><div class="equation-small">Z = CrossAttention(Q_learned, H_input)<br>适合：异构长度 · 多传感器 · 固定上下文预算</div></article>
+          <article class="method-card"><span class="method-index">05 · DISCRETE</span><h3>VQ / FSQ / RVQ 离散量化</h3><p>VQ 用最近邻 codebook；FSQ 对少量 latent 维度逐维量化；RVQ 逐级编码残差。适合自回归生成、压缩和 primitive discovery，但应监控 code 利用率与量化损失。</p><div class="equation-small">VQ: k = argminⱼ ‖h − eⱼ‖²<br>FSQ: zq = round(bound(z))</div></article>
+          <article class="method-card"><span class="method-index">06 · GROUNDED</span><h3>任务 / 物理结果驱动 token</h3><p>不以重建原始像素为唯一目标，而让 token 预测语言、动作、未来观测、力或状态转移。对触觉而言，这类 objective 更有机会学习跨传感器共享的 interaction semantics。</p><div class="equation-small">maximize I(z; physical outcome | state, action)<br>而非只 maximize I(z; raw pixels)</div></article>
+        </div>
+
+        <div class="comparison-band">
+          <div><strong>连续 token</strong><p>保留信息多、训练容易、适合第一版跨传感器统一接口；但序列可能较长，缺少离散 primitive。</p></div>
+          <div><strong>离散 token</strong><p>便于压缩、生成与统计 code 使用；但共享空间尚未对齐时，codebook 很容易编码 sensor identity。</p></div>
+          <div><strong>Query token</strong><p>固定输出长度并兼容可变输入，尤其适合 image、array 与 wrench 混合；语义取决于 query 的训练目标。</p></div>
+        </div>
+
+        <div class="section-head" style="margin-top:34px">
+          <div>
+            <div class="section-kicker">Classic papers</div>
+            <h2 style="font-size:clamp(1.45rem,2.7vw,2.05rem)">理解 tokenizer 最值得读的经典论文</h2>
+            <p class="section-desc">从文本的统计切分，到视觉 patch、学习式离散 codebook、在线 teacher tokenizer、固定长度 latent queries，再到机器人动作序列压缩，构成了今天多模态 tokenizer 的主要技术谱系。</p>
+          </div>
+        </div>
+
+        <div class="table-wrap wide-table">
+          <table>
+            <thead><tr><th>论文</th><th>年份 / 领域</th><th>核心贡献</th><th>对触觉 tokenizer 的启发</th><th>主来源</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Japanese and Korean Voice Search</strong></td><td>2012 · NLP / Speech</td><td>早期 WordPiece 路线：以子词词表缓解开放词汇问题，后来被 BERT 等模型广泛采用。</td><td>说明 tokenizer 首先是“可复用词表 + 稳定分解规则”，而不只是 encoder。</td><td><a href="https://doi.org/10.1109/ICASSP.2012.6289079" target="_blank" rel="noopener">DOI ↗</a></td></tr>
+              <tr><td><strong>Neural Machine Translation of Rare Words with Subword Units</strong></td><td>2016 · NLP</td><td>将 BPE 引入神经机器翻译，通过迭代合并高频符号对构建子词 vocabulary。</td><td>最经典的“由数据频率发现复用 primitive”范式。</td><td><a href="https://aclanthology.org/P16-1162/" target="_blank" rel="noopener">ACL ↗</a></td></tr>
+              <tr><td><strong>Neural Discrete Representation Learning</strong></td><td>2017 · Representation</td><td>提出 VQ-VAE：encoder 输出经最近邻 codebook 量化，形成可学习离散 latent。</td><td>触觉离散 codebook、contact primitive 与生成式 world model 的基础。</td><td><a href="https://arxiv.org/abs/1711.00937" target="_blank" rel="noopener">Paper ↗</a></td></tr>
+              <tr><td><strong>Subword Regularization</strong></td><td>2018 · NLP</td><td>提出 Unigram LM segmentation，并在训练时采样多种子词切分以提高鲁棒性。</td><td>启发“同一触觉轨迹可以有多尺度、多分辨率 tokenization”，而不是固定唯一切分。</td><td><a href="https://aclanthology.org/P18-1007/" target="_blank" rel="noopener">ACL ↗</a></td></tr>
+              <tr><td><strong>SentencePiece</strong></td><td>2018 · NLP</td><td>从原始文本直接训练语言无关的 BPE / Unigram tokenizer，并提供可逆工程实现。</td><td>强调 tokenizer 既是算法也是数据规范、归一化和部署工具链。</td><td><a href="https://aclanthology.org/D18-2012/" target="_blank" rel="noopener">ACL ↗</a></td></tr>
+              <tr><td><strong>An Image is Worth 16×16 Words</strong></td><td>2021 · Vision</td><td>ViT 将规则图像 patch 线性投影为连续 token，证明 Transformer 不要求离散输入。</td><td>触觉图像最直接的 patch-token baseline；也适合规则 taxel grid。</td><td><a href="https://openreview.net/forum?id=YicbFdNTTy" target="_blank" rel="noopener">ICLR ↗</a></td></tr>
+              <tr><td><strong>Perceiver: General Perception with Iterative Attention</strong></td><td>2021 · Multimodal</td><td>用非对称 cross-attention 把高维、任意结构输入蒸馏到紧凑 latent array。</td><td>非常适合将不同长度、不同拓扑的触觉/力输入统一成固定数量 tokens。</td><td><a href="https://arxiv.org/abs/2103.03206" target="_blank" rel="noopener">Paper ↗</a></td></tr>
+              <tr><td><strong>TokenLearner</strong></td><td>2021 · Vision / Video</td><td>学习少量自适应空间—时间 tokens，替代密集规则 patch，降低后续 attention 成本。</td><td>启发从大面积 tactile map 中动态提取接触区域与关键变化。</td><td><a href="https://proceedings.neurips.cc/paper/2021/hash/6a30e32e56fce5cf381895dfe6ca7b6f-Abstract.html" target="_blank" rel="noopener">NeurIPS ↗</a></td></tr>
+              <tr><td><strong>Taming Transformers / VQGAN</strong></td><td>2021 · Visual generation</td><td>用感知与对抗损失训练高质量离散视觉 codebook，再用 Transformer 建模 code 序列。</td><td>说明“重建质量好的离散 token”通常需要超越像素 MSE 的目标。</td><td><a href="https://compvis.github.io/taming-transformers/" target="_blank" rel="noopener">Project ↗</a></td></tr>
+              <tr><td><strong>BEiT: BERT Pre-Training of Image Transformers</strong></td><td>2022 · Vision SSL</td><td>先用离散 image tokenizer 生成视觉词表，再遮挡图像 patches，让 Transformer 恢复对应 visual token。</td><td>提供“masked tactile patch → discrete teacher target”的直接模板，也揭示 tokenizer 质量会决定预训练目标质量。</td><td><a href="https://arxiv.org/abs/2106.08254" target="_blank" rel="noopener">Paper ↗</a></td></tr>
+              <tr><td><strong>iBOT: Image BERT Pre-Training with Online Tokenizer</strong></td><td>2022 · Vision SSL</td><td>以 EMA teacher 作为在线 tokenizer，对 masked patch tokens 和 global token 同时做 self-distillation，避免先单独训练固定 dVAE tokenizer。</td><td>对触觉尤其重要：tokenizer 可以和表示目标联合演化，不必先冻结一个只会重建像素的 codebook。</td><td><a href="https://arxiv.org/abs/2111.07832" target="_blank" rel="noopener">Paper ↗</a></td></tr>
+              <tr><td><strong>Flamingo</strong></td><td>2022 · Vision-language</td><td>Perceiver Resampler 将可变数量视觉 feature 压成固定数量连续 visual tokens。</td><td>与 sensor-extensible tactile interface 的结构最相似：输入长度可变，输出预算固定。</td><td><a href="https://arxiv.org/abs/2204.14198" target="_blank" rel="noopener">Paper ↗</a></td></tr>
+              <tr><td><strong>BLIP-2</strong></td><td>2023 · Vision-language</td><td>Q-Former 用 learned queries 从冻结视觉 encoder 中抽取与文本最相关的固定长度表示。</td><td>说明 token 的语义由下游对齐目标决定；同样结构可改为 force / dynamics queries。</td><td><a href="https://arxiv.org/abs/2301.12597" target="_blank" rel="noopener">Paper ↗</a></td></tr>
+              <tr><td><strong>Finite Scalar Quantization</strong></td><td>2024 · Discrete representation</td><td>以少量维度的有限标量量化替代 VQ，形成隐式 codebook，并避免复杂 codebook 维护。</td><td>适合在连续触觉共享空间稳定后，作为低维护成本的离散化方案。</td><td><a href="https://openreview.net/forum?id=8ishA3LxN8" target="_blank" rel="noopener">ICLR ↗</a></td></tr>
+              <tr><td><strong>FAST: Efficient Action Tokenization</strong></td><td>2025 · Robotics</td><td>先对连续 action chunk 做 DCT，再量化并按低频优先展开，最后用 BPE 压缩成离散动作 tokens。</td><td>说明物理时序不必逐时刻独立分箱；触觉/力历史也可先进入频域或事件域，再发现可复用的动态 primitives。</td><td><a href="https://www.pi.website/research/fast" target="_blank" rel="noopener">Official ↗</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-head" style="margin-top:34px">
+          <div>
+            <div class="section-kicker">Design guide</div>
+            <h2 style="font-size:clamp(1.45rem,2.7vw,2.05rem)">触觉场景中怎样选择 tokenizer</h2>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>目标</th><th>优先方案</th><th>原因</th><th>主要风险 / 必做诊断</th></tr></thead>
+            <tbody>
+              <tr><td>先把单一触觉图像接入 Transformer</td><td>ViT patch tokens 或 CNN feature tokens</td><td>实现最简单，保留空间结构，方便复用视觉 backbone。</td><td>强 crop / color augmentation 可能破坏真实形变与力信息。</td></tr>
+              <tr><td>混合 image、array、wrench 等异构输入</td><td>Family-specific stems + Perceiver/Q-Former 式 learned queries</td><td>允许输入长度和拓扑不同，同时输出固定 <code>K×d</code> 接口。</td><td>检查 token 是否泄露 sensor ID，metadata 是否被正确使用。</td></tr>
+              <tr><td>发现重复接触 primitive 或做自回归 world model</td><td>先学连续共享空间，再加 VQ / FSQ / RVQ</td><td>离散 token 便于生成、统计和组合。</td><td>监控 code utilization、perplexity、dead codes 与量化误差。</td></tr>
+              <tr><td>换新传感器时只训练小 adapter</td><td>连续 common/private tokens + geometry/type/time metadata</td><td>比强行共享离散词表更易适应未见过的信号尺度和布局。</td><td>必须做 leave-one-sensor-out 与 frozen-policy transfer。</td></tr>
+              <tr><td>保留 slip、impact、force trend 等动态信息</td><td>多速率 temporal windows + event/query tokens</td><td>单帧无法判断加载/卸载、滑移方向和接触转移。</td><td>检查时间同步、延迟、滤波与采样频率差异。</td></tr>
+              <tr><td>让 token 表示物理交互而非传感器外观</td><td>Force/contact/transition-grounded auxiliary objectives</td><td>物理结果是跨 sensor 更稳定的共同变量。</td><td>避免只对齐信息交集；保留 sensor-private token。</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="two-col">
+          <div class="list-card"><h3>一个好的 tactile tokenizer 应该满足</h3><ul class="clean-list"><li><strong>信息充分：</strong>能预测力、接触模式、滑移或后续状态转移。</li><li><strong>紧凑：</strong>token 数量和计算量受控，而不是复制完整 feature map。</li><li><strong>传感器不变：</strong>common tokens 难以预测 sensor identity。</li><li><strong>可组合：</strong>多个传感器同时输入时能够融合，而非互相覆盖。</li><li><strong>可扩展：</strong>新 sensor 只需少量校准与小 adapter。</li></ul></div>
+          <div class="list-card"><h3>最常见的失败模式</h3><ul class="clean-list"><li>把“线性投影到 hidden size”误当成已学到共享语义。</li><li>VQ codebook 按传感器类型分区，而不是按 interaction primitive 分区。</li><li>强制所有传感器完全一致，丢掉高分辨率触觉独有的几何信息。</li><li>只优化重建，token 对控制和状态转移没有增量价值。</li><li>随机划分训练/测试，无法证明新传感器扩展性。</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="simulation-platforms">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Tactile simulation</div>
+            <h2>触觉仿真平台：链接、输出与适用场景</h2>
+            <p class="section-desc">“触觉仿真”可能只模拟接触力，也可能一直模拟到弹性体形变、marker motion 与 RGB 光学成像。选平台前必须先确定需要哪一层输出，以及是否优先速度、物理精度、可微性或 sim-to-real。</p>
+          </div>
+        </div>
+
+        <div class="architecture">
+          <h3 style="margin-top:0">一个完整视触觉仿真栈包含哪些层？</h3>
+          <div class="sim-stack" aria-label="触觉仿真层级">
+            <article class="sim-layer"><span class="layer-tag">Layer 1</span><h3>机器人与物体动力学</h3><p>关节、控制器、刚体或可变形物体运动，通常由 MuJoCo、PhysX、PyBullet、SAPIEN 或专用 solver 处理。</p></article>
+            <article class="sim-layer"><span class="layer-tag">Layer 2</span><h3>接触与摩擦</h3><p>接触点、penetration、normal/shear force、摩擦、stick/slip 与碰撞稳定性。</p></article>
+            <article class="sim-layer"><span class="layer-tag">Layer 3</span><h3>弹性体形变</h3><p>Gel pad、skin 或 taxel substrate 的位移、应力与表面形状；可用近似模型、FEM、MPM 或 IPC。</p></article>
+            <article class="sim-layer"><span class="layer-tag">Layer 4</span><h3>光学与 marker</h3><p>表面法向到 RGB 的映射、阴影、光照、marker displacement 与相机成像。</p></article>
+            <article class="sim-layer"><span class="layer-tag">Layer 5</span><h3>传感器电子学</h3><p>噪声、饱和、量化、漂移、延迟、滤波、坐标系与不同采样频率。</p></article>
+          </div>
+          <div class="note"><strong>比较原则：</strong>只输出 contact force 的通用引擎，不能与生成真实 GelSight RGB 的平台按“图像保真度”直接比较；高保真 FEM 也不应只按每秒环境步数与近似渲染器比较。</div>
+        </div>
+
+        <div class="taxonomy">
+          <article class="taxonomy-item"><div class="taxonomy-icon">R</div><div><h3>快速光学 / 几何近似</h3><p>TACTO、Taxim、FOTS、Tacchi。适合快速生成 tactile RGB/depth/marker 信号、做感知预训练和早期 sim-to-real；通常不完整模拟软体应力与复杂摩擦。</p></div></article>
+          <article class="taxonomy-item"><div class="taxonomy-icon">G</div><div><h3>GPU 大规模策略学习</h3><p>TacSL、Taccel、ETac、Tactile Genesis。强调并行环境、可配置 tactile fields 和在线 RL/IL；UniVTAC 则进一步提供统一数据生成与 benchmark。</p></div></article>
+          <article class="taxonomy-item"><div class="taxonomy-icon">∂</div><div><h3>可微 / 高保真物理</h3><p>DiffRedMax、DiffTactile、TacIPC、TaCauchy、HydroShear。适合系统辨识、材料参数优化、gradient-based control，以及 stress / traction / deformation / shear ground truth；通常配置更复杂。</p></div></article>
+          <article class="taxonomy-item"><div class="taxonomy-icon">F</div><div><h3>通用 contact / force 底座</h3><p>MuJoCo、Isaac Lab、ManiSkill/SAPIEN、Genesis World、Gazebo。适合 6D wrench、joint torque、contact force 或自定义 taxel 信号；光学与软体保真度依平台而异。</p></div></article>
+        </div>
+
+        <div class="section-head" style="margin-top:34px">
+          <div>
+            <div class="section-kicker">Open-source & usable</div>
+            <h2 style="font-size:clamp(1.45rem,2.7vw,2.05rem)">当前可直接使用的开源触觉仿真平台</h2>
+            <p class="section-desc">仅列入截至 2026-08-13 已有公开代码、能够实际下载使用的平台。GitHub Star 为查询当日快照，会随时间变化；“可用”不代表所有平台都仍在活跃维护。</p>
+          </div>
+        </div>
+
+        <div class="table-wrap wide-table">
+          <table>
+            <thead><tr><th>平台</th><th>简单描述</th><th>主要输出 / 适合场景</th><th>开源状态</th><th>GitHub Stars</th><th>链接</th></tr></thead>
+            <tbody>
+              <tr><td><strong>UniVTAC</strong></td><td>Isaac Lab + TacEx/UIPC 的统一 visuo-tactile 数据生成、预训练与 manipulation benchmark 平台。</td><td>GelSight Mini、ViTai GF225、Xense WS；适合统一数据生成、encoder 预训练和 8 个 contact-rich tasks。</td><td><span class="tag active">可用 · 新</span></td><td><strong>★ 130</strong></td><td><div class="platform-links"><a href="https://github.com/univtac/UniVTAC" target="_blank" rel="noopener">GitHub</a><a href="https://univtac.github.io/" target="_blank" rel="noopener">Project</a><a href="https://arxiv.org/abs/2602.10093" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>TacEx</strong></td><td>Isaac Sim / Isaac Lab 的模块化 tactile extension，组合 UIPC soft-body、Taxim optics 与 FOTS marker rendering。</td><td>Gel deformation、tactile RGB、marker displacement；适合已有 Isaac Lab 项目的 sensor integration。</td><td><span class="tag">Beta</span></td><td><strong>★ 159</strong></td><td><div class="platform-links"><a href="https://github.com/DH-Ng/TacEx" target="_blank" rel="noopener">GitHub</a><a href="https://arxiv.org/abs/2411.04776" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>Taccel</strong></td><td>面向 GPU 大规模训练的高性能 tactile simulator，以 IPC 与 Affine Body Dynamics 联合处理机器人、物体和触觉软体。</td><td>高保真 deformation、tactile signals、大规模并行环境；适合 tactile RL / IL 和高吞吐数据生成。</td><td><span class="tag active">可用</span></td><td><strong>★ 198</strong></td><td><div class="platform-links"><a href="https://github.com/Taccel-Simulator/Taccel" target="_blank" rel="noopener">GitHub</a><a href="https://taccel-simulator.github.io/index.html" target="_blank" rel="noopener">Docs</a><a href="https://arxiv.org/abs/2504.12908" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>Tactile Genesis</strong></td><td>Genesis World 上的 GPU-parallel tactile sensor suite；当前 Genesis World 已直接提供多种 tactile probes。</td><td>contact/depth、per-taxel force/torque、marker displacement、proximity 等；适合 sensor-layout ablation 与 dexterous RL。</td><td><span class="tag active">可用</span></td><td><strong>★ 55</strong><br><span class="subtle">Genesis World ★ 29.7k</span></td><td><div class="platform-links"><a href="https://github.com/neuroagents-lab/tactile-genesis" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/Genesis-Embodied-AI/genesis-world" target="_blank" rel="noopener">Genesis World</a><a href="https://arxiv.org/abs/2606.22332" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>TacSL</strong><br><span class="subtle">Isaac Lab integration</span></td><td>GPU visuo-tactile simulation 方法；当前最实用的入口是 Isaac Lab 官方 visuo-tactile sensor integration。</td><td>Tactile RGB、normal/shear force fields；适合 NVIDIA GPU 栈中的大规模在线策略学习。</td><td><span class="tag active">可用 · 宿主集成</span></td><td><strong>★ 7.9k*</strong></td><td><div class="platform-links"><a href="https://github.com/isaac-sim/IsaacLab" target="_blank" rel="noopener">Isaac Lab</a><a href="https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/sensors/visuo_tactile_sensor.html" target="_blank" rel="noopener">Docs</a><a href="https://arxiv.org/abs/2408.06506" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>TACTO</strong></td><td>经典的快速 vision-based tactile renderer，官方实现与 PyBullet 集成，配置简单。</td><td>DIGIT / OmniTact 风格 tactile RGB 与接触几何；适合快速原型、感知数据和 baseline。</td><td><span class="tag">已归档 · 仍可用</span></td><td><strong>★ 470</strong></td><td><div class="platform-links"><a href="https://github.com/facebookresearch/tacto" target="_blank" rel="noopener">GitHub</a><a href="https://arxiv.org/abs/2012.08456" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>Taxim</strong></td><td>基于少量真实 GelSight 样本校准的 example-based simulator，兼顾 optical image 与 marker motion。</td><td>GelSight RGB、marker displacement；适合 real-aligned optical rendering 与 sim-to-real。</td><td><span class="tag active">可用</span></td><td><strong>★ 123</strong></td><td><div class="platform-links"><a href="https://github.com/Robo-Touch/Taxim" target="_blank" rel="noopener">GitHub</a><a href="https://arxiv.org/abs/2109.04027" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>FOTS</strong></td><td>轻量、平台无关的 optical tactile simulator，可嵌入 MuJoCo 等物理引擎。</td><td>Tactile RGB、marker motion；适合高帧率 optical head 与控制实验。</td><td><span class="tag active">可用</span></td><td><strong>★ 40</strong></td><td><div class="platform-links"><a href="https://github.com/Rancho-zhao/FOTS" target="_blank" rel="noopener">GitHub</a><a href="https://arxiv.org/abs/2404.19217" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>Tactile Gym 2.0</strong></td><td>PyBullet 上的 tactile RL / sim-to-real 环境套件，自带多种任务。</td><td>TacTip、DIGIT、DigiTac；适合 surface/edge following、pushing 和算法 benchmark。</td><td><span class="tag active">可用</span></td><td><strong>★ 183</strong></td><td><div class="platform-links"><a href="https://github.com/ac-93/tactile_gym" target="_blank" rel="noopener">GitHub</a><a href="https://arxiv.org/abs/2207.10763" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>Tacchi</strong></td><td>可插拔的低成本 gel deformation / tactile image simulator，可与 MuJoCo、Gazebo 等结合。</td><td>触觉形变与 image generation；适合快速加入现有机器人仿真环境。</td><td><span class="tag active">可用</span></td><td><strong>★ 76</strong></td><td><div class="platform-links"><a href="https://github.com/zixichen007115/Tacchi" target="_blank" rel="noopener">GitHub</a></div></td></tr>
+              <tr><td><strong>DiffRedMax</strong><br><span class="subtle">Efficient Tactile Simulation</span></td><td>可微刚体接触 simulator，可直接作为 PyTorch layer 使用。</td><td>Dense normal/shear force fields；适合 differentiable control、system identification 和 force sensing。</td><td><span class="tag active">可用</span></td><td><strong>★ 105</strong></td><td><div class="platform-links"><a href="https://github.com/eanswer/TactileSimulation" target="_blank" rel="noopener">GitHub</a><a href="https://people.csail.mit.edu/jiex/papers/TactileSim/index.html" target="_blank" rel="noopener">Project</a></div></td></tr>
+              <tr><td><strong>DiffTactile</strong></td><td>基于 FEM 的全流程可微 tactile/contact simulator，支持多材料物体与软体传感器。</td><td>Dense tactile feedback、soft-body states、contact dynamics；适合材料辨识和 gradient-based skill learning。</td><td><span class="tag active">可用</span></td><td><strong>★ 315</strong></td><td><div class="platform-links"><a href="https://github.com/Genesis-Embodied-AI/DiffTactile" target="_blank" rel="noopener">GitHub</a><a href="https://difftactile.github.io/" target="_blank" rel="noopener">Project</a><a href="https://arxiv.org/abs/2403.08716" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>TacIPC</strong></td><td>FEM 弹性体 + Incremental Potential Contact，重点解决高保真、无穿透的软体接触。</td><td>Gel deformation、marker displacement、friction-aware contact；适合高保真离线数据与传感器标定。</td><td><span class="tag active">可用</span></td><td><strong>★ 14</strong></td><td><div class="platform-links"><a href="https://github.com/Ailon-Island/TacIPC" target="_blank" rel="noopener">GitHub</a><a href="https://arxiv.org/abs/2311.05843" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>TaCauchy</strong></td><td>Isaac Sim / Isaac Lab + UIPC 的 FEM tactile framework，可直接提取 Cauchy stress 与 contact traction。</td><td>Stress、pressure、traction、gel deformation；适合材料标定和高保真力学 ground truth。</td><td><span class="tag active">可用 · 新</span></td><td><strong>★ 11</strong></td><td><div class="platform-links"><a href="https://github.com/figsama/TaCauchy" target="_blank" rel="noopener">GitHub</a><a href="https://arxiv.org/abs/2606.20426" target="_blank" rel="noopener">Paper</a></div></td></tr>
+              <tr><td><strong>HydroShear</strong></td><td>面向剪切接触与 stick-slip 的 hydroelastic tactile simulation，强调路径依赖的 tangential interaction。</td><td>Shear/contact mechanics；适合滑动、摩擦、剪切力和 sim-to-real 研究。</td><td><span class="tag active">可用 · 新</span></td><td><strong>★ 34</strong></td><td><div class="platform-links"><a href="https://github.com/MMintLab/hydroshear" target="_blank" rel="noopener">GitHub</a></div></td></tr>
+              <tr><td><strong>ETac</strong></td><td>解析 deformation propagation + 学习式 residual 的高效 tactile surrogate，强调大面积触觉与并行训练。</td><td>Elastomer surface deformation；适合大面积 tactile sensing 与 scalable RL。</td><td><span class="tag active">可用 · 新</span></td><td><strong>★ 14</strong></td><td><div class="platform-links"><a href="https://github.com/Crxus/ETac" target="_blank" rel="noopener">GitHub</a><a href="https://lassford.github.io/ETac/" target="_blank" rel="noopener">Project</a><a href="https://arxiv.org/abs/2604.20295" target="_blank" rel="noopener">Paper</a></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="source-caption"><strong>Star 快照：</strong>2026-08-13。★ 数量直接对应表中 GitHub 仓库；<strong>*TacSL</strong> 当前可用入口为 Isaac Lab 集成，因此显示的是 Isaac Lab 仓库 Star。TACTO 虽已归档为只读，但代码仍公开可安装。Tactile Genesis 的仓库 README 建议新项目优先使用已内置 tactile sensors 的 Genesis World。</p>
+        <div class="note" style="margin-top:14px"><strong>未列入“当前可用开源”：</strong>Tac2Real 虽已有公开 GitHub 页面，但截至 2026-08-13 仓库仍注明代码将在论文接收后释放，因此这里不把它计为当前可直接使用的平台。</div>
+
+        <div class="section-head" style="margin-top:34px">
+          <div>
+            <div class="section-kicker">General-purpose backends</div>
+            <h2 style="font-size:clamp(1.45rem,2.7vw,2.05rem)">通用 force / contact 仿真底座</h2>
+            <p class="section-desc">如果只需要 6D wrench、joint torque、contact force / flags 或低维 taxel signal，而不要求完整的 optical tactile rendering，这些开源机器人 simulator 通常更简单、更稳定。</p>
+          </div>
+        </div>
+
+        <div class="table-wrap wide-table">
+          <table>
+            <thead><tr><th>平台</th><th>简单描述</th><th>触觉 / 力能力</th><th>GitHub Stars</th><th>链接</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Genesis World</strong></td><td>GPU-parallel 多物理机器人 simulator，当前版本已原生加入多种 tactile probes。</td><td>Contact/Depth Probe、KinematicTaxel、ElastomerTaxel、ProximityTaxel 等；适合 dexterous RL 与 sensor-layout ablation。</td><td><strong>★ 29.7k</strong></td><td><div class="platform-links"><a href="https://github.com/Genesis-Embodied-AI/genesis-world" target="_blank" rel="noopener">GitHub</a><a href="https://genesis-world.readthedocs.io/en/latest/user_guide/sensing/tactile.html" target="_blank" rel="noopener">Tactile docs</a></div></td></tr>
+              <tr><td><strong>MuJoCo / MJX</strong></td><td>成熟的刚体接触与控制 simulator；MJX 提供 XLA/GPU 并行接口。</td><td>Touch、force/torque sensors、contact dynamics；适合 wrist F/T、接触状态和控制研究。</td><td><strong>★ 14.5k</strong></td><td><div class="platform-links"><a href="https://github.com/google-deepmind/mujoco" target="_blank" rel="noopener">GitHub</a><a href="https://mujoco.readthedocs.io/en/stable/XMLreference.html" target="_blank" rel="noopener">Sensors</a><a href="https://mujoco.readthedocs.io/en/stable/mjx.html" target="_blank" rel="noopener">MJX</a></div></td></tr>
+              <tr><td><strong>Isaac Lab / Isaac Sim</strong></td><td>NVIDIA GPU robotics stack，适合大规模 RL、OpenUSD 资产和 synthetic-data pipeline。</td><td>Contact sensors、force matrices；当前还提供基于 TacSL 的 visuo-tactile sensor integration。</td><td><strong>★ 7.9k</strong></td><td><div class="platform-links"><a href="https://github.com/isaac-sim/IsaacLab" target="_blank" rel="noopener">GitHub</a><a href="https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/sensors/contact_sensor.html" target="_blank" rel="noopener">Contact</a><a href="https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/sensors/visuo_tactile_sensor.html" target="_blank" rel="noopener">Visuo-tactile</a></div></td></tr>
+              <tr><td><strong>ManiSkill 3 / SAPIEN</strong></td><td>GPU-parallel manipulation benchmark / simulator，适合快速搭建 contact-rich manipulation 数据管线。</td><td>Pairwise/net contact forces 与 impulses；没有统一原生 optical tactile renderer。</td><td><strong>★ 3.2k</strong></td><td><div class="platform-links"><a href="https://github.com/haosulab/ManiSkill" target="_blank" rel="noopener">GitHub</a><a href="https://maniskill.readthedocs.io/en/latest/user_guide/index.html" target="_blank" rel="noopener">Docs</a></div></td></tr>
+              <tr><td><strong>Gazebo Sim</strong></td><td>传统机器人与 ROS 生态中的通用 simulator，插件和硬件在环支持成熟。</td><td>Contact sensor、joint force-torque sensor、noise models；高分辨率 tactile rendering 需自行扩展。</td><td><strong>★ 1.4k</strong></td><td><div class="platform-links"><a href="https://github.com/gazebosim/gz-sim" target="_blank" rel="noopener">GitHub</a><a href="https://gazebosim.org/libs/sensors/" target="_blank" rel="noopener">Sensors</a></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="source-caption">通用底座 Star 同样为 2026-08-13 快照。对于只使用 wrist F/T 或 contact force 的任务，优先用这些原生接口通常比额外模拟 optical tactile 更容易保证坐标系、单位和时间定义一致。</p>
+
+        <div class="section-head" style="margin-top:34px">
+          <div>
+            <div class="section-kicker">Selection guide</div>
+            <h2 style="font-size:clamp(1.45rem,2.7vw,2.05rem)">按研究目标快速选平台</h2>
+          </div>
+        </div>
+        <div class="decision-grid">
+          <article class="decision-card"><span class="question">需要最快开始</span><h3>TACTO / Taxim / FOTS</h3><p>已有刚体 simulator，只想补 tactile RGB 或 marker motion；优先采用轻量、可插拔的渲染模型。</p></article>
+          <article class="decision-card"><span class="question">需要 GPU 大规模 RL</span><h3>TacSL / Taccel / Tactile Genesis</h3><p>大量并行 contact rollouts、在线策略学习或 sensor-layout ablation 是第一优先级；ETac 适合学习式大面积形变。</p></article>
+          <article class="decision-card"><span class="question">已使用 Isaac Lab</span><h3>TacSL / TacEx / UniVTAC / TaCauchy</h3><p>前两者偏 sensor integration；UniVTAC 提供完整数据与 benchmark 流程；TaCauchy 提供更严格的 FEM stress/traction ground truth。</p></article>
+          <article class="decision-card"><span class="question">需要梯度</span><h3>DiffRedMax / DiffTactile</h3><p>做材料系统辨识、参数优化、trajectory optimization 或 differentiable policy learning。</p></article>
+          <article class="decision-card"><span class="question">需要高保真形变基准</span><h3>TacIPC / DiffTactile / TaCauchy</h3><p>更关心稳定 FEM、材料、摩擦、stress/traction 和软体接触，而不是最高环境吞吐。</p></article>
+          <article class="decision-card"><span class="question">只需要 wrench / torque</span><h3>MuJoCo / Isaac Lab / ManiSkill / Genesis World</h3><p>无需生成 optical tactile image 时，直接使用通用接触、F/T 或 per-taxel 接口通常更可靠，也更容易验证坐标系和时间定义。</p></article>
+        </div>
+
+        <div class="section-head" style="margin-top:34px">
+          <div>
+            <div class="section-kicker">For heterogeneous token learning</div>
+            <h2 style="font-size:clamp(1.45rem,2.7vw,2.05rem)">仿真怎样帮助训练可扩展 tactile tokenizer</h2>
+            <p class="section-desc">仿真的最大价值不是替代真实数据，而是提供同一物理 interaction 的多种 sensor rendering 和完整 canonical labels，从而制造真实世界难以获得的跨传感器配对。</p>
+          </div>
+        </div>
+
+        <div class="architecture">
+          <div class="canonical-flow" aria-label="同一物理交互生成多传感器观测">
+            <div class="canonical-node"><strong>Canonical physical trajectory</strong><span>contact pose · normal/shear force · slip velocity · deformation · robot state/action</span></div>
+            <div class="canonical-arrow">→</div>
+            <div class="canonical-node renderers"><div class="renderer-chip">GelSight / DIGIT<br>RGB + markers</div><div class="renderer-chip">Taxel array<br>pressure field</div><div class="renderer-chip">Wrist F/T<br>6D wrench</div></div>
+            <div class="canonical-arrow">→</div>
+            <div class="canonical-node"><strong>Shared interaction tokens</strong><span>paired alignment · sensor dropout · leave-one-renderer-out · real-data anchors</span></div>
+          </div>
+
+          <div class="two-col">
+            <div class="list-card"><h3>建议在仿真中记录的 canonical labels</h3><ul class="clean-list"><li>每个接触点的位置、法向、切向速度与接触对象 ID。</li><li>normal / shear force field、合成 6D wrench 与坐标变换。</li><li>gel / skin deformation、penetration depth 与 marker displacement。</li><li>stick、slip、impact、release、jam 等接触阶段。</li><li>动作前后的 robot/object state transition。</li></ul></div>
+            <div class="list-card"><h3>避免“仿真捷径”的训练设计</h3><ul class="clean-list"><li>随机化光照、marker、材料、噪声、延迟、饱和和采样率。</li><li>不要只用像素相同定义 positive pair；以 canonical physics 为对齐依据。</li><li>完整留出一个 renderer 或 sensor family 做测试。</li><li>同时保留大量未配对 trajectory，避免模型依赖同步配对。</li><li>用少量真实 paired calibration 作为 scale 与坐标锚点。</li></ul></div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:16px"><strong>实现时最容易忽略的细节：</strong>不同引擎对 contact force 的符号、参考坐标系、作用点、时间积分、solver impulse 与滤波定义并不一致。公开数据前应同时保存原始 impulse、换算后的 force、时间步长、sensor frame 和变换链。</div>
+      </div>
+    </section>
+
   </main>
 
   <footer>
     <div class="shell footer-inner">
-      <div>调研日期：2026-08-13。论文链接优先指向 arXiv 或出版社主来源。</div>
+      <div>最后更新：2026-08-13。论文与软件链接优先指向官方项目、代码仓库、arXiv 或出版社主来源。</div>
       <div>注：本页为研究路线梳理，不声称穷尽所有同期未公开或尚未索引的工作。</div>
     </div>
   </footer>
